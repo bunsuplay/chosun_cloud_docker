@@ -1,0 +1,187 @@
+/* ============================================================
+   로또 번호 자동 생성기 - 스타일
+   컨셉: 어두운 추첨기 배경 위에 공식 로또 공 색상이 떠오르는 화면
+   ============================================================ */
+
+:root {
+  --bg:        #0e1116;
+  --bg-glow:   #1b2433;
+  --surface:   #161b22;
+  --surface-2: #1c232d;
+  --line:      #2a323d;
+  --text:      #e8edf2;
+  --muted:     #8b97a6;
+  --gold:      #f5c518;   /* 당첨/잭팟 느낌의 강조색 */
+  --gold-dark: #d4a813;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic",
+               "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 50% -10%, var(--bg-glow), transparent 55%),
+    var(--bg);
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px 80px;
+}
+
+.wrap { width: 100%; max-width: 560px; }
+
+/* ---------- 헤더 ---------- */
+.head { text-align: center; margin-bottom: 40px; }
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.head h1 {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.head h1 span { color: var(--gold); }
+
+.head .sub {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ---------- 추첨 결과 영역 ---------- */
+.draw {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.round-label {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+.balls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+/* 공 한 개 */
+.ball {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  /* 입체감: 위쪽 하이라이트 + 아래쪽 그림자 */
+  box-shadow: inset 0 -6px 10px rgba(0, 0, 0, .25),
+              inset 0 5px 8px rgba(255, 255, 255, .45),
+              0 4px 10px rgba(0, 0, 0, .4);
+}
+
+.ball.empty {
+  background: var(--surface-2);
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-weight: 600;
+}
+
+/* 새로 뽑힌 공이 톡 튀어나오는 애니메이션 */
+@keyframes pop {
+  0%   { transform: scale(.3); opacity: 0; }
+  70%  { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.ball.pop { animation: pop .45s ease-out both; }
+
+/* ---------- 버튼 ---------- */
+.btn {
+  background: var(--gold);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .15s ease, transform .1s ease;
+}
+.btn:hover { background: var(--gold-dark); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+/* ---------- 기록 ---------- */
+.history h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.history-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+.history-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.history-round {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--gold);
+  min-width: 56px;
+}
+
+.history-balls { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+
+/* 기록에 들어가는 작은 공 */
+.mini-ball {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  box-shadow: inset 0 -3px 5px rgba(0, 0, 0, .2),
+              inset 0 3px 4px rgba(255, 255, 255, .4);
+}
+
+.history-time { font-size: 12px; color: var(--muted); width: 100%; }
+
+.history-empty { color: var(--muted); font-size: 14px; }
+
+/* ---------- 접근성: 모션 줄이기 설정 존중 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ball.pop { animation: none; }
+}
+
+/* ---------- 모바일 ---------- */
+@media (max-width: 420px) {
+  .ball { width: 46px; height: 46px; font-size: 18px; }
+  .head h1 { font-size: 28px; }
+}

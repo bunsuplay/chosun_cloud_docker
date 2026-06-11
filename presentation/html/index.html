@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로또 번호 자동 생성기</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- 헤더 -->
+    <header class="head">
+      <p class="eyebrow">DOCKER 3-TIER DEMO</p>
+      <h1>로또 번호 <span>자동 생성기</span></h1>
+      <p class="sub">버튼을 누르면 1~45 중 6개를 추첨해 DB에 기록합니다.</p>
+    </header>
+
+    <!-- 현재 추첨 결과 (Hero) -->
+    <section class="draw">
+      <p class="round-label" id="roundLabel">아직 추첨 전이에요</p>
+
+      <div class="balls" id="balls">
+        <!-- 추첨 전 자리표시용 빈 공 6개 -->
+        <span class="ball empty">?</span>
+        <span class="ball empty">?</span>
+        <span class="ball empty">?</span>
+        <span class="ball empty">?</span>
+        <span class="ball empty">?</span>
+        <span class="ball empty">?</span>
+      </div>
+
+      <button class="btn" id="generateBtn">번호 생성하기</button>
+    </section>
+
+    <!-- 추첨 기록 -->
+    <section class="history">
+      <h2>추첨 기록</h2>
+      <ul class="history-list" id="historyList">
+        <li class="history-empty">기록을 불러오는 중…</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+# ============================================================
+# 전체 시스템을 한 번에 실행하는 docker-compose 파일
+# 실행:  docker compose up --build
+# 접속:  http://localhost:8080
+#
+# 3개 서비스(=3개 컨테이너)
+#   web (nginx)  : Presentation Tier  - 화면 + API 프록시
+#   app (Flask)  : Application Tier   - 번호 추첨 / DB 처리
+#   db  (MySQL)  : Data Tier          - 결과 저장
+# 세 컨테이너는 lotto-net 네트워크로 서로 통신한다.
+# ============================================================
+
+services:
+
+  # ---------- Data Tier ----------
+  db:
+    image: mysql:8.0
+    container_name: lotto-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass     # root 비밀번호
+      MYSQL_DATABASE: lotto             # 시작 시 자동 생성될 DB
+      MYSQL_USER: lottouser             # 앱이 사용할 계정
+      MYSQL_PASSWORD: lottopass
+    volumes:
+      - db-data:/var/lib/mysql                              # 데이터 영속화
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql # 최초 1회 테이블 생성
+    networks:
+      - lotto-net
+    healthcheck:                          # DB가 준비됐는지 확인
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ---------- Application Tier ----------
+  app:
+    build: ./application
+    container_name: lotto-app
+    environment:                          # 앱이 DB에 접속할 정보
+      DB_HOST: db
+      DB_USER: lottouser
+      DB_PASSWORD: lottopass
+      DB_NAME: lotto
+    depends_on:
+      db:
+        condition: service_healthy        # DB가 healthy 된 뒤에 시작
+    networks:
+      - lotto-net
+
+  # ---------- Presentation Tier ----------
+  web:
+    build: ./presentation
+    container_name: lotto-web
+    ports:
+      - "8080:80"                         # 호스트 8080 -> 컨테이너 80
+    depends_on:
+      - app
+    networks:
+      - lotto-net
+
+networks:
+  lotto-net:                              # 세 컨테이너 전용 내부 네트워크
+
+volumes:
+  db-data:                                # MySQL 데이터 보관용 볼륨
