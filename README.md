@@ -59,7 +59,7 @@
 
 ### `web` — nginx (Presentation)
 - `presentation/html/`의 화면 파일(`index.html`, `style.css`, `script.js`)을 서빙
-- `/api/`로 들어온 요청은 `app:5000`(Flask)으로 **리버스 프록시**
+- `/api/`로 들어온 요청은 `app:5000`(Flask)으로 리버스 프록시
   → 브라우저는 백엔드 주소를 몰라도 되고, 같은 출처(`localhost:8080`)로만 통신
 
 ### `app` — Flask (Application)
@@ -67,11 +67,11 @@
 - `GET /api/history` : 최근 추첨 기록 20건 반환
 - `GET /api/health` : 동작 확인용
 - 추첨 로직: `random.sample(range(1,46), 6)` 으로 중복 없이 6개를 뽑아 오름차순 정렬
-- DB 접속 정보는 코드에 박지 않고 **환경변수**로 주입받음
+- DB 접속 정보는 코드에 박지 않고 환경변수로 주입받음
 
 ### `db` — MySQL (Data)
 - 컨테이너 최초 실행 시 `data/init.sql`이 자동 실행되어 `lotto_results` 테이블 생성
-- 데이터는 `db-data` 볼륨에 저장되어 **컨테이너를 내려도 기록이 유지**됨
+- 데이터는 `db-data` 볼륨에 저장되어 컨테이너를 내려도 기록이 유지됨
 
 **테이블 구조 (`lotto_results`)**
 
@@ -111,8 +111,6 @@
 ---
 
 ## 6. 실행 방법
-
-사전 준비: **Docker**와 **Docker Compose**가 설치되어 있어야 합니다.
 
 ```bash
 # 1. 프로젝트 폴더로 이동
