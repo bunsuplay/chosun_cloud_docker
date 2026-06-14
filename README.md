@@ -90,7 +90,7 @@
   - nginx 설정에서 `proxy_pass http://app:5000;` → `app` = Flask 컨테이너
   - Flask 환경변수 `DB_HOST=db` → `db` = MySQL 컨테이너
 - 외부(호스트)에 열려 있는 포트는 `web`의 8080 하나뿐입니다.
-  `app`(5000)과 `db`(3306)는 내부에서만 통신하므로 보안상 더 안전합니다.
+  `app`(5000)과 `db`(3306)는 내부에서만 통신합니다.
 - 실행 순서 보장:
   - `app`은 `db`가 healthy 상태가 된 뒤에 시작 (`depends_on` + `healthcheck`)
   - 그래도 생길 수 있는 짧은 타이밍 문제를 대비해, Flask는 DB 연결을 재시도합니다.
